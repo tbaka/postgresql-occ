@@ -1,0 +1,13 @@
+---
+- name: Converge
+  hosts: postgresql
+  become: true
+  vars_files:
+    - ../../vars.yml
+  tasks:
+    - name: inlcude common
+      include_role:
+        name: common
+    - name: include db
+      include_role:
+        name: postgresql_cluster

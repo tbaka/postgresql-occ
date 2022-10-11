@@ -1,0 +1,43 @@
+---
+name: Debian 11
+on: [push, pull_request]    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: set up python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: copy run script to path
+        run: |
+          mkdir -p $HOME/.local/bin
+          cp scripts/run.sh $HOME/.local/bin/run
+          chmod +x $HOME/.local/bin/run
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: integrity checks
+        run: |
+          echo "722448d9ed88e8d77ca3bd5785f333c72ee1d75a507a7211c0d42085bffe66b4 group_vars/postgresql/vars" | sha256sum -c
+          
+      - name: install dependencies
+        run: |
+          sudo apt update
+          sudo apt install openssh-server -y
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r requirements.txt
+          ansible-galaxy install -r collections.yml
+
+      - name: build ansible environment
+        run: | 
+          run test:build
+          run test:deploy debian11
+        env:
+          TOKEN_PASSWORD: ${{ secrets.LINODE_API_TOKEN }}
+          ACCOUNT_SSH_KEYS: ${{ secrets.TEST_AUTHORIZED_KEYS }}

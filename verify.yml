@@ -1,0 +1,65 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  user: root
+  vars_files:
+    - group_vars/postgresql/vars
+    
+  tasks:
+    - name: create test database and insert data on primary
+      postgresql_query:
+        db: postgres
+        query: CREATE DATABASE replication_test;
+        autocommit: yes
+      become_user: postgres
+      become: true
+      run_once: true
+      delegate_to: "{{ groups['postgresql'][0] }}"
+
+    - name: insert into test database from primary 
+      postgresql_query:
+        db: replication_test
+        query: "{{ item.query }}"
+        autocommit: yes
+      loop:
+        - { query: "CREATE TABLE replication_test(ID SERIAL PRIMARY KEY NOT NULL, replication_status TEXT NOT NULL);" }
+        - { query: "INSERT INTO replication_test(replication_status) VALUES ('ok');" }
+      become_user: postgres
+      become: true
+      run_once: true
+      delegate_to: "{{ groups['postgresql'][0] }}"  
+
+    - name: query data from pg2
+      postgresql_query:
+        db: replication_test
+        query: SELECT * FROM replication_test;
+      become_user: postgres
+      become: true
+      run_once: true
+      delegate_to: "{{ groups['postgresql'][1] }}"
+      register: pg2_replication_info
+
+    - name: query data from pg3
+      postgresql_query:
+        db: replication_test
+        query: SELECT * FROM replication_test;
+      become_user: postgres
+      become: true
+      run_once: true
+      delegate_to: "{{ groups['postgresql'][2] }}"
+      register: pg3_replication_info      
+
+    - name: verify replication of data on pg2
+      assert:
+        that:
+          - "{{ pg2_replication_info.query_result[0]['replication_status'] == 'ok'}}"
+      run_once: true      
+      delegate_to: "{{ groups['postgresql'][1] }}"            
+
+    - name: verify replication of data on pg3
+      assert:
+        that:
+          - "{{ pg3_replication_info.query_result[0]['replication_status'] == 'ok'}}"
+      run_once: true      
+      delegate_to: "{{ groups['postgresql'][2] }}"            

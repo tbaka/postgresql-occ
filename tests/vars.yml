@@ -1,0 +1,27 @@
+---
+# group_vars/postgresql/vars
+
+# Linode vars
+ssh_keys: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI test@linode.com
+
+# Deployment vars
+instance_prefix: postgresql
+cluster_name: linode.com
+tags: POC
+
+# Linode types:
+type: g6-nanode-1
+region: us-southeast
+
+# hostnames
+pg1_hostname: pg1.linode.com
+pg2_hostname: pg2.linode.com
+pg3_hostname: pg3.linode.com
+
+# private ips
+pg1_priv1: 192.168.56.1
+pg2_priv1: 192.168.56.2
+pg3_priv1: 192.168.56.3
+
+# test password
+repmgrd_passwd: moleculetestpass123
