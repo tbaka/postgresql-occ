@@ -17,7 +17,6 @@ exec > >(tee /dev/ttyS0 /var/log/stackscript.log) 2>&1
 # source script libraries
 source <ssinclude StackScriptID=1>
 function cleanup {
-	echo "[err] play failed"
   if [ "$?" != "0" ] || [ "$SUCCESS" == "true" ]; then
     #deactivate
     cd ${HOME}
