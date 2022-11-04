@@ -16,7 +16,7 @@ Create a highly available Postgresql database cluster using the [Linode Ansible 
 ## Documentation
 
 Deployment guide:
-- [Deploying a PostgreSQL Cluster throught the Linode Marketplace](https://www.linode.com/docs) (Comming Soon)
+- [Deploying a PostgreSQL Cluster throught the Linode Marketplace](https://www.linode.com/docs) (Coming soon...)
 
 Additonal resources:
 
