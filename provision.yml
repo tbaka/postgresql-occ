@@ -37,19 +37,19 @@
     set_fact:
       pg1_hostname: '{{ instance_prefix }}0'
       pg1_ip1: '{{ ansible_all_ipv4_addresses[0] }}'
-      pg1_priv1: '{{ ansible_all_ipv4_adresses[1] }}'
+      pg1_priv1: '{{ ansible_all_ipv4_addresses[1] }}'
 
   # new
   - name: set facts
     set_fact:
-      pg2_hostname: '{{ info.results.1.instance.label }}.{{ cluster_name }}'
-      pg3_hostname: '{{ info.results.2.instance.label }}.{{ cluster_name }}'
+      pg2_hostname: '{{ info.results.0.instance.label }}.{{ cluster_name }}'
+      pg3_hostname: '{{ info.results.1.instance.label }}.{{ cluster_name }}'
       # public ips
-      pg2_ip1: '{{ info.results.1.instance.ipv4[0] }}'
-      pg3_ip1: '{{ info.results.2.instance.ipv4[0] }}'
+      pg2_ip1: '{{ info.results.0.instance.ipv4[0] }}'
+      pg3_ip1: '{{ info.results.1.instance.ipv4[0] }}'
       # private ips
-      pg2_priv1: '{{ info.results.1.instance.ipv4[1] }}'
-      pg3_priv1: '{{ info.results.2.instance.ipv4[1] }}'
+      pg2_priv1: '{{ info.results.0.instance.ipv4[1] }}'
+      pg3_priv1: '{{ info.results.1.instance.ipv4[1] }}'
 
   - name: update group_vars
     blockinfile:
