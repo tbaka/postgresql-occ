@@ -25,7 +25,7 @@
     secondary_node2: "{{ pg2_priv1 }}"
     secondary_node3: "{{ pg3_priv1 }}"
   run_once: true
-  delegate_to: "{{ groups['postgresql_local'][0] }}"
+  delegate_to: "{{ groups['postgresql-local'][0] }}"
 
 - name: updating pg1 pg_hba.conf file 
   template:
@@ -35,7 +35,7 @@
     group: postgres
     mode: '0644'      
   run_once: true
-  delegate_to: "{{ groups['postgresql_local'][0] }}"
+  delegate_to: "{{ groups['postgresql-local'][0] }}"
 
 - name: updating pg1 postgresql.conf file 
   template:
@@ -45,7 +45,7 @@
     group: postgres
     mode: '0644'      
   run_once: true
-  delegate_to: "{{ groups['postgresql_local'][0] }}"
+  delegate_to: "{{ groups['postgresql-local'][0] }}"
      
 # pg2
 

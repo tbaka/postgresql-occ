@@ -78,7 +78,7 @@
       path: ./hosts
       marker: "# {mark} POSTGRESQL LINODES"
       block: |
-        [postgresql_local]
+        [postgresql-local]
         localhost ansible_connection=local user=root
         [postgresql]
         {{ pg2_ip1 }}

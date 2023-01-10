@@ -5,7 +5,7 @@
     use: systemd
     name: "{{ pg1_hostname }}"
   run_once: true
-  delegate_to: "{{ groups['postgresql_local'][0] }}"
+  delegate_to: "{{ groups['postgresql-local'][0] }}"
 
 - name: set pg2 hostname
   hostname:
