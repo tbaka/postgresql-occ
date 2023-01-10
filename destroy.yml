@@ -8,7 +8,7 @@
       - group_vars/postgresql/secret_vars
   
   vars:
-    count: 3
+    count: 2
 
   tasks:
   - name: deleting postgresql linodes

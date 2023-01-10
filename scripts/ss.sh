@@ -3,12 +3,14 @@ set -e
 trap "cleanup $? $LINENO" EXIT
 
 ## Deployment Variables
-# <UDF name="cluster_name" label="Domain Name" example="linode.com" default="linode.com" />
+# <UDF name="cluster_name" label="Domain Name" example="linode.com" />
 # <UDF name="token_password" label="Your Linode API token" />
 # <UDF name="add_ssh_keys" label="Add Account SSH Keys to All Nodes?" oneof="yes,no"  default="yes" />
 ## Linode/SSH Security Settings
 #<UDF name="sudo_username" label="The limited sudo user to be created in the cluster" />
 
+# there also needs to be a udf to force private IP
+#
 # git repo
  export GIT_REPO="https://github.com/linode-solutions/postgresql-occ.git"
 
