@@ -28,7 +28,7 @@
     comment: "postgres@{{ pg1_hostname }}"
     state: present
   run_once: true
-  delegate_to: "{{ groups['postgresql'][0] }}"
+  delegate_to: "{{ groups['postgresql-local'][0] }}"
 
 #pg2
 
@@ -43,7 +43,7 @@
     comment: "postgres@{{ pg2_hostname }}"
     state: present
   run_once: true
-  delegate_to: "{{ groups['postgresql'][1] }}"
+  delegate_to: "{{ groups['postgresql'][0] }}"
 
 #pg3
 
@@ -58,7 +58,7 @@
     comment: "postgres@{{ pg3_hostname }}"
     state: present
   run_once: true
-  delegate_to: "{{ groups['postgresql'][2] }}"
+  delegate_to: "{{ groups['postgresql'][1] }}"
 
 - name: wait until pubkey is created
   wait_for:
@@ -72,7 +72,7 @@
     src: "{{ pg_home }}/.ssh/id_rsa.pub"
   register: postgresql1_pubkey  
   run_once: true
-  delegate_to: "{{ groups['postgresql'][0] }}"
+  delegate_to: "{{ groups['postgresql-local'][0] }}"
 
 #pg2
 
@@ -81,7 +81,7 @@
     src: "{{ pg_home }}/.ssh/id_rsa.pub"
   register: postgresql2_pubkey 
   run_once: true 
-  delegate_to: "{{ groups['postgresql'][1] }}"
+  delegate_to: "{{ groups['postgresql'][0] }}"
 
 #pg3   
 
@@ -90,7 +90,7 @@
     src: "{{ pg_home }}/.ssh/id_rsa.pub"
   register: postgresql3_pubkey 
   run_once: true 
-  delegate_to: "{{ groups['postgresql'][2] }}"
+  delegate_to: "{{ groups['postgresql'][1] }}"
 
 # add pubkeys to each server
 - name: adding pubkeys to postgresql1
@@ -105,7 +105,7 @@
       {{ postgresql2_pubkey.content | b64decode }}
       {{ postgresql3_pubkey.content | b64decode }}
   run_once: true
-  delegate_to: "{{ groups['postgresql'][0] }}"  
+  delegate_to: "{{ groups['postgresql-local'][0] }}"  
 
 - name: adding pubkeys to postgresql2
   blockinfile:
@@ -119,7 +119,7 @@
       {{ postgresql1_pubkey.content | b64decode }}
       {{ postgresql3_pubkey.content | b64decode }}
   run_once: true
-  delegate_to: "{{ groups['postgresql'][1] }}"
+  delegate_to: "{{ groups['postgresql'][0] }}"
 
 - name: adding pubkeys to postgresql3
   blockinfile:
@@ -133,4 +133,4 @@
       {{ postgresql1_pubkey.content | b64decode }}
       {{ postgresql2_pubkey.content | b64decode }}
   run_once: true
-  delegate_to: "{{ groups['postgresql'][2] }}"
+  delegate_to: "{{ groups['postgresql'][1] }}"

@@ -6,7 +6,7 @@
       - group_vars/postgresql/secret_vars
   
   vars:
-    count: 3
+    count: 2
        
   tasks:
   - name: creating postgresql cluster
@@ -33,18 +33,21 @@
     register: info
     with_sequence: count='{{count}}'
 
+  - name: set facts for pg1 
+    set_fact:
+      pg1_hostname: '{{ instance_prefix }}0'
+      pg1_ip1: '{{ ansible_all_ipv4_addresses[0] }}'
+      pg1_priv1: '{{ ansible_all_ipv4_adresses[1] }}'
+
   # new
   - name: set facts
     set_fact:
-      pg1_hostname: '{{ info.results.0.instance.label }}.{{ cluster_name }}'
       pg2_hostname: '{{ info.results.1.instance.label }}.{{ cluster_name }}'
       pg3_hostname: '{{ info.results.2.instance.label }}.{{ cluster_name }}'
       # public ips
-      pg1_ip1: '{{ info.results.0.instance.ipv4[0] }}'
       pg2_ip1: '{{ info.results.1.instance.ipv4[0] }}'
       pg3_ip1: '{{ info.results.2.instance.ipv4[0] }}'
       # private ips
-      pg1_priv1: '{{ info.results.0.instance.ipv4[1] }}'
       pg2_priv1: '{{ info.results.1.instance.ipv4[1] }}'
       pg3_priv1: '{{ info.results.2.instance.ipv4[1] }}'
 
@@ -67,19 +70,17 @@
         pg3_priv1: {{ pg3_priv1 }}
 
   - name: test connectivity
-    ping: '{{ item }}'
-    with_items:
-      - '{{ pg1_ip1 }}'
-      - '{{ pg2_ip1 }}'   
-      - '{{ pg3_ip1 }}'
+    ping: '{{ item.instance.ipv4[0] }}'
+    with_items: "{{ info.results }}"
 
   - name: update inventory
     blockinfile:
       path: ./hosts
       marker: "# {mark} POSTGRESQL LINODES"
       block: |
+        [postgresql-local]
+        localhost ansible_connection=local user=root
         [postgresql]
-        {{ pg1_ip1 }}
         {{ pg2_ip1 }}
         {{ pg3_ip1 }}
 
