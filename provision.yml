@@ -35,7 +35,7 @@
 
   - name: set facts for pg1 
     set_fact:
-      pg1_hostname: '{{ instance_prefix }}0'
+      pg1_hostname: '{{ instance_prefix }}0.{{ cluster_name }}'
       pg1_ip1: '{{ ansible_all_ipv4_addresses[0] }}'
       pg1_priv1: '{{ ansible_all_ipv4_addresses[1] }}'
 
