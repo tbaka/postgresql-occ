@@ -2,7 +2,7 @@
 
 # linodes
 - name: configure Postgresql Linodes
-  hosts: postgresql
+  hosts: all
   any_errors_fatal: true
   user: root
   vars:
