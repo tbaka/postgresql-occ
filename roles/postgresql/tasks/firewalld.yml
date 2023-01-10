@@ -17,7 +17,7 @@
     secondary_node1: "{{ pg2_priv1 }}"
     secondary_node2: "{{ pg3_priv1 }}"
   run_once: true
-  delegate_to: "{{ groups['postgresql-local'][0] }}"
+  delegate_to: "{{ groups['postgresql_local'][0] }}"
 
 - name: installing internal.xml for pg1
   template:
@@ -27,7 +27,7 @@
     group: root
     mode: '0644'
   run_once: true  
-  delegate_to: "{{ groups['postgresql-local'][0] }}"
+  delegate_to: "{{ groups['postgresql_local'][0] }}"
 
 # pg2
 

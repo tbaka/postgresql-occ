@@ -8,7 +8,7 @@
   become_user: postgres
   become: true
   run_once: true
-  delegate_to: "{{ groups['postgresql-local'][0] }}"
+  delegate_to: "{{ groups['postgresql_local'][0] }}"
 
 - name: creating repmgr database for repmgr user
   postgresql_db:
@@ -18,4 +18,4 @@
   become_user: postgres
   become: true
   run_once: true
-  delegate_to: "{{ groups['postgresql-local'][0] }}"
+  delegate_to: "{{ groups['postgresql_local'][0] }}"

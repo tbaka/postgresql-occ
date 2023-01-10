@@ -4,7 +4,7 @@
   set_fact:
     pg_home: "/var/lib/postgresql"
   run_once: true
-  delegate_to: "{{ groups['postgresql'][0] }}"
+  delegate_to: "{{ groups['postgresql_local'][0] }}"
 
 - name: create ssh directory for postgres
   file:
@@ -28,7 +28,7 @@
     comment: "postgres@{{ pg1_hostname }}"
     state: present
   run_once: true
-  delegate_to: "{{ groups['postgresql-local'][0] }}"
+  delegate_to: "{{ groups['postgresql_local'][0] }}"
 
 #pg2
 
@@ -72,7 +72,7 @@
     src: "{{ pg_home }}/.ssh/id_rsa.pub"
   register: postgresql1_pubkey  
   run_once: true
-  delegate_to: "{{ groups['postgresql-local'][0] }}"
+  delegate_to: "{{ groups['postgresql_local'][0] }}"
 
 #pg2
 
