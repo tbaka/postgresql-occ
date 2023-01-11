@@ -84,12 +84,18 @@
         {{ pg2_ip1 }}
         {{ pg3_ip1 }}
 
-  - name: update in-memory inventory
+  - name: update in-memory inventory local
+    add_host:
+      name: '{{ item }}'
+      groups: postgresql_local
+    with_items:
+      - '{{ pg1_ip1 }}'
+      
+  - name: update in-memory inventory remote
     add_host:
       name: '{{ item }}'
       groups: postgresql
     with_items:
-      - '{{ pg1_ip1 }}'
       - '{{ pg2_ip1 }}'
       - '{{ pg3_ip1 }}'
 

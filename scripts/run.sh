@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-trap "cleanup $? $LINENO" EXIT
+#trap "cleanup $? $LINENO" EXIT
 
 function cleanup {
   if [ "$?" != "0" ]; then
